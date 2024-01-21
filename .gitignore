@@ -223,3 +223,4 @@ terragrunt-debug.tfvars.json
 # dont want any data files
 **.csv
 **.gz
+**.json
