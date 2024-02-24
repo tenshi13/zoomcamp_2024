@@ -2,10 +2,10 @@ version: 2
 
 sources:
   - name: staging
-    database: taxi-rides-ny-339813-412521
+    database: vaulted-bit-411213
      # For postgres:
       #database: production
-    schema: trips_data_all
+    schema: ny_taxi
 
       # loaded_at_field: record_loaded_at
     tables:
@@ -13,6 +13,7 @@ sources:
       - name: yellow_tripdata
          # freshness:
            # error_after: {count: 6, period: hour}
+      - name: fhv_tripdata
 
 models:
     - name: stg_green_tripdata
@@ -141,8 +142,8 @@ models:
                   to: ref('taxi_zone_lookup')
                   field: locationid
                   severity: warn
-          - name: dropoff_locationid 
-            description: locationid where the meter was engaged.
+          - name: Dropoff_locationid 
+            description: locationid where the meter was disengaged.
             tests:
               - relationships:
                   to: ref('taxi_zone_lookup')
@@ -197,3 +198,39 @@ models:
             description: Total amount of all tolls paid in trip.
           - name: Total_amount 
             description: The total amount charged to passengers. Does not include cash tips.
+      
+    - name: stg_fhv_tripdata
+      description: >
+        for hire vehicle trip data, 
+        ref: - https://www.nyc.gov/site/tlc/businesses/for-hire-vehicles.page
+             - https://learn.microsoft.com/en-us/azure/open-datasets/dataset-taxi-for-hire-vehicle?tabs=azureml-opendatasets
+      columns:
+          - name: tripid
+            description: Primary key for this table, generated with a concatenation of PUlocationID+pickup_datetime
+          - name: Dispatching_base_number
+            description: The TLC Base License Number of the base that dispatched the trip
+          - name: Affiliated_base_number
+            description: The TLC Base License Number of the base that the vehicle is affiliated with
+          - name: pickup_datetime
+            description: The date and time when the meter was engaged.
+          - name: dropoff_datetime
+            description: The date and time when the meter was disengaged.
+          - name: Pickup_locationid
+            description: locationid where the meter was engaged.
+            tests:
+              - relationships:
+                  to: ref('taxi_zone_lookup')
+                  field: locationid
+                  severity: warn
+          - name: Dropoff_locationid 
+            description: locationid where the meter was disengaged.
+            tests:
+              - relationships:
+                  to: ref('taxi_zone_lookup')
+                  field: locationid
+                  severity: warn
+          - name: SR_Flag
+            description: > 
+              Indicates if the trip was a part of a shared ride chain 
+              offered by a High Volume FHV company (for example, Uber Pool, Lyft Line). 
+              For shared trips, the value is 1. For non-shared rides, this field is null
