@@ -11,6 +11,6 @@ CREATE OR REPLACE EXTERNAL TABLE `vaulted-bit-411213.ny_taxi.fhv_tripdata`  (
     Affiliated_base_number STRING
 )
 OPTIONS (
-    format ="PARQUET",
-    uris = ['gs://ethanhobl_zoomcamp_taxi_data/fhv/fhv_tripdata_2019-*.parquet']
+    format ="CSV",
+    uris = ['gs://ethanhobl_zoomcamp_taxi_data/fhv/fhv_tripdata_2019-*.csv']
 );
