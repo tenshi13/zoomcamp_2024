@@ -1,4 +1,4 @@
--- uploaded the fhv 2019 data via the web_to_gcs.py
+-- uploaded the fhv 2019 data manually, copied the csv.gz from repo and then unzipped
 -- then create the bq table via
 
 CREATE OR REPLACE EXTERNAL TABLE `vaulted-bit-411213.ny_taxi.fhv_tripdata`  (

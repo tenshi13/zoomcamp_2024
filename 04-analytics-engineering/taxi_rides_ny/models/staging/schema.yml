@@ -206,7 +206,7 @@ models:
              - https://learn.microsoft.com/en-us/azure/open-datasets/dataset-taxi-for-hire-vehicle?tabs=azureml-opendatasets
       columns:
           - name: tripid
-            description: Primary key for this table, generated with a concatenation of dispatching_base_num+pickup_datetime
+            description: Primary key for this table, generated with a concatenation of PUlocationID+pickup_datetime
           - name: Dispatching_base_number
             description: The TLC Base License Number of the base that dispatched the trip
           - name: Affiliated_base_number
