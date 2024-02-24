@@ -7,13 +7,16 @@
 with tripdata as 
 (
   select *,
-    row_number() over(partition by dispatching_base_num, pickup_datetime) as rn
+    row_number() over(partition by PUlocationID, pickup_datetime) as rn
   from {{ source('staging','fhv_tripdata') }}
-  where dispatching_base_num is not null 
+  where 
+    PUlocationID is not null and
+    DOlocationID is not null and
+    pickup_datetime like '2019-%'
 )
 select
     -- identifiers
-    {{ dbt_utils.generate_surrogate_key(['dispatching_base_num', 'pickup_datetime']) }} as tripid,
+    {{ dbt_utils.generate_surrogate_key(['PUlocationID', 'pickup_datetime']) }} as tripid,
     {{ dbt.safe_cast("dispatching_base_num", api.Column.translate_type("integer")) }} as Dispatching_base_number,
     {{ dbt.safe_cast("Affiliated_base_number", api.Column.translate_type("integer")) }} as Affiliated_base_number,
 
