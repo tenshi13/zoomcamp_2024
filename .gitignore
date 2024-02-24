@@ -224,3 +224,4 @@ terragrunt-debug.tfvars.json
 **.csv
 **.gz
 **.json
+**.parquet
